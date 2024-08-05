@@ -1,3 +1,11 @@
-export const PhotosGallery = () => {
-  return <h3>PhotosGallery</h3>;
+import { Grid, PhotosGalleryItem } from '..';
+
+export const PhotosGallery = ({ array }) => {
+  return (
+    <Grid>
+      {array.map(item => (
+        <PhotosGalleryItem key={item.id} {...item} />
+      ))}
+    </Grid>
+  );
 };

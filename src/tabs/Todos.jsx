@@ -1,22 +1,18 @@
-import { TodoForm, Text, TodoList, EditForm } from 'components';
+import { Text, TodoList, EditForm, Form } from 'components';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useEffect } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export const Todos = () => {
-  const [todos, setTodos] = useState(
-    () => JSON.parse(localStorage.getItem('todos')) ?? [],
-  );
+  const [todos, setTodos] = useLocalStorage('todos', []);
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({});
-
-  useEffect(() => localStorage.setItem('todos', JSON.stringify(todos)));
 
   const findTodo = text => {
     return todos.some(todo => todo.text.toLowerCase() === text.toLowerCase());
   };
 
-  const addTodo = ({ text }) => {
+  const addTodo = text => {
     if (findTodo(text)) {
       alert('This Todo already exists');
       return;
@@ -66,7 +62,7 @@ export const Todos = () => {
           defaultValue={currentTodo}
         />
       ) : (
-        <TodoForm onSubmit={addTodo} />
+        <Form onSubmit={addTodo} />
       )}
       {todos.length > 0 ? (
         <TodoList
